@@ -1,6 +1,6 @@
 
 import React,{useState} from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TouchableWithoutFeedback } from 'react-native';
 
 
 import Svg, { Path,Circle } from "react-native-svg"
@@ -9,32 +9,25 @@ import Svg, { Path,Circle } from "react-native-svg"
 export default function App() {
   const [count,setCount] = useState(0);
 
-  const decrement = ()=> {
-    var newCount = count-1;
-    setCount(newCount)
-  }
-
-  const increment = ()=> {
-    var newCount = count+1;
-    setCount(newCount)
-  }
+  const[bg,setBg] = useState("#FFFFF")
+  
   return (
-    <View style={{flex:1,justifyContent:'space-around'}}>
-        <Count count={count}/>
+    <View style={{flex:1,justifyContent:'space-around',backgroundColor:bg}}>
+        <Count count={count} setBg={setBg}/>
         <View style={{flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
-          <SvgLeftPolygon decrement={()=>decrement()}/>
+          <SvgLeftPolygon decrement={()=>setCount(count-1)}/>
           <SvgCircle setCount={setCount}/>
-          <SvgRightPolygon increment={()=>increment()}/>
+          <SvgRightPolygon increment={()=>setCount(count+1)}/>
         </View>  
     </View>
   );
 }
 
-function Count({count}){
+function Count({count,setBg}){
   return(
-    <View>
+    <TouchableWithoutFeedback onPress={()=>{console.log('clicked'); setBg("#d989e0")}}>
       <Text style={[styles.count,styles.textShadow]}>{count}</Text>
-    </View>
+    </TouchableWithoutFeedback>
   )
 }
 
@@ -70,6 +63,7 @@ function SvgCircle({setCount}){
 function SvgLeftPolygon({decrement}){
   return(
      <TouchableOpacity 
+        style={styles.outline}
         onPress={()=>decrement()}
       >
       <Svg
@@ -92,7 +86,7 @@ function SvgLeftPolygon({decrement}){
 function SvgRightPolygon({increment}){
   return(
     <TouchableOpacity 
-        // style={styles.outline}
+        style={styles.outline}
         onPress={()=>increment()}
       >
       <Svg
