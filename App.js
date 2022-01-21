@@ -9,35 +9,42 @@ import Svg, { Path,Circle } from "react-native-svg"
 export default function App() {
   const [count,setCount] = useState(0);
 
-  const[bg,setBg] = useState("#FFFFF")
+  const[mode,setMode] = useState("dark");
+  let stroke = mode=="light"?"#F00082":"white";
   
   return (
-    <View style={{flex:1,justifyContent:'space-around',backgroundColor:bg}}>
-        <Count count={count} setBg={setBg}/>
+    <View style={{flex:1,justifyContent:'space-around',backgroundColor:mode=="light"?"white":"black"}}>
+        <Count count={count} mode={mode} setMode={setMode}/>
         <View style={{flexDirection:'row',justifyContent:'space-around',alignItems:'center'}}>
-          <SvgLeftPolygon decrement={()=>setCount(count-1)}/>
-          <SvgCircle setCount={setCount}/>
-          <SvgRightPolygon increment={()=>setCount(count+1)}/>
+          <SvgLeftPolygon stroke={stroke} decrement={()=>setCount(count-1)}/>
+          <SvgCircle stroke={stroke} setCount={setCount}/>
+          <SvgRightPolygon stroke={stroke} increment={()=>setCount(count+1)}/>
         </View>  
     </View>
   );
 }
 
-function Count({count,setBg}){
+function Count({count,mode,setMode}){
+  let new_mode = mode=="light"?"dark":"light";
+  let txt_color = mode=="light"?"#F00082":"white";
+
   return(
-    <TouchableWithoutFeedback onPress={()=>{console.log('clicked'); setBg("#d989e0")}}>
-      <Text style={[styles.count,styles.textShadow]}>{count}</Text>
+    <TouchableWithoutFeedback onPress={()=>{setMode(new_mode)}}>
+      <Text style={[styles.count,styles.textShadow,{color:txt_color}]}>{count}</Text>
     </TouchableWithoutFeedback>
   )
 }
 
-function SvgCircle({setCount}){
+function SvgCircle({stroke,setCount}){
+  let outline = false;
+  if(stroke=="#F00082") outline = true;
+
   const handleRandom = () =>{
     setCount(Math.floor(Math.random()*100));
   }
   return(
     <TouchableOpacity 
-      style={styles.outline}
+      style={outline && styles.outline}
       onPress={()=>handleRandom()}
       onLongPress={()=>setCount(0)}
     >
@@ -52,7 +59,7 @@ function SvgCircle({setCount}){
         cy={40}
         r={35}
         fill="#fff"
-        stroke="#F00082"
+        stroke={stroke}
         strokeWidth={6}
       />
     </Svg>
@@ -60,10 +67,13 @@ function SvgCircle({setCount}){
   )
 }
 
-function SvgLeftPolygon({decrement}){
+function SvgLeftPolygon({stroke,decrement}){
+  let outline = false;
+  if(stroke=="#F00082") outline = true;
+
   return(
      <TouchableOpacity 
-        style={styles.outline}
+        style={outline && styles.outline}
         onPress={()=>decrement()}
       >
       <Svg
@@ -75,7 +85,7 @@ function SvgLeftPolygon({decrement}){
         <Path
           d="M5.59 29.846 43.966 4.133c3.322-2.226 7.783.155 7.783 4.154v51.427c0 3.998-4.461 6.379-7.783 4.153L5.589 38.154c-2.956-1.98-2.956-6.327 0-8.308Z"
           fill="#fff"
-          stroke="#F00082"
+          stroke={stroke}
           strokeWidth={6}
         />
       </Svg>
@@ -83,10 +93,13 @@ function SvgLeftPolygon({decrement}){
   )
 }
 
-function SvgRightPolygon({increment}){
+function SvgRightPolygon({stroke,increment}){
+  let outline = false;
+  if(stroke=="#F00082") outline = true;
+
   return(
     <TouchableOpacity 
-        style={styles.outline}
+        style={outline && styles.outline}
         onPress={()=>increment()}
       >
       <Svg
@@ -99,7 +112,7 @@ function SvgRightPolygon({increment}){
     <Path
       d="M49.41 38.154 11.034 63.867c-3.322 2.226-7.783-.155-7.783-4.154V8.287c0-4 4.461-6.38 7.783-4.154l38.378 25.713c2.956 1.98 2.956 6.327 0 8.308Z"
       fill="#fff"
-      stroke="#F00082"
+      stroke={stroke}
       strokeWidth={6}
     />
     </Svg>
