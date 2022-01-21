@@ -1,5 +1,4 @@
 ## Screenshots
----
 
 <table>
     <tr>
@@ -17,14 +16,12 @@
 <br><br>
 
 ## How to use?
----
 <img src="./assets/desc.jpg"/>
 
 ### To change mode
    ` Click on the number to switch between light and dark mode.`
 <br><br>
 ## Design
----
 
 **Designed using Figma.**
 
